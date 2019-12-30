@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26124.0
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D383A6C9-EB5F-4CD3-AF34-F28E5D715C05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Justa.Job.Backend.Api", "src\Justa.Job.Backend.Api\Justa.Job.Backend.Api.csproj", "{01209F3B-2719-40F4-95AF-0FFBDF23571D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{6D8ACBED-7BE0-4E98-A861-50FE51FD8E36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Justa.Job.Backend.Test", "test\Justa.Job.Backend.Test\Justa.Job.Backend.Test.csproj", "{5A48C59F-0D5B-4FAC-8F1A-9FC98E12C1CF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01209F3B-2719-40F4-95AF-0FFBDF23571D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01209F3B-2719-40F4-95AF-0FFBDF23571D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01209F3B-2719-40F4-95AF-0FFBDF23571D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{01209F3B-2719-40F4-95AF-0FFBDF23571D}.Debug|x64.Build.0 = Debug|Any CPU
+		{01209F3B-2719-40F4-95AF-0FFBDF23571D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{01209F3B-2719-40F4-95AF-0FFBDF23571D}.Debug|x86.Build.0 = Debug|Any CPU
+		{01209F3B-2719-40F4-95AF-0FFBDF23571D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01209F3B-2719-40F4-95AF-0FFBDF23571D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01209F3B-2719-40F4-95AF-0FFBDF23571D}.Release|x64.ActiveCfg = Release|Any CPU
+		{01209F3B-2719-40F4-95AF-0FFBDF23571D}.Release|x64.Build.0 = Release|Any CPU
+		{01209F3B-2719-40F4-95AF-0FFBDF23571D}.Release|x86.ActiveCfg = Release|Any CPU
+		{01209F3B-2719-40F4-95AF-0FFBDF23571D}.Release|x86.Build.0 = Release|Any CPU
+		{5A48C59F-0D5B-4FAC-8F1A-9FC98E12C1CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A48C59F-0D5B-4FAC-8F1A-9FC98E12C1CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A48C59F-0D5B-4FAC-8F1A-9FC98E12C1CF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5A48C59F-0D5B-4FAC-8F1A-9FC98E12C1CF}.Debug|x64.Build.0 = Debug|Any CPU
+		{5A48C59F-0D5B-4FAC-8F1A-9FC98E12C1CF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5A48C59F-0D5B-4FAC-8F1A-9FC98E12C1CF}.Debug|x86.Build.0 = Debug|Any CPU
+		{5A48C59F-0D5B-4FAC-8F1A-9FC98E12C1CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A48C59F-0D5B-4FAC-8F1A-9FC98E12C1CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A48C59F-0D5B-4FAC-8F1A-9FC98E12C1CF}.Release|x64.ActiveCfg = Release|Any CPU
+		{5A48C59F-0D5B-4FAC-8F1A-9FC98E12C1CF}.Release|x64.Build.0 = Release|Any CPU
+		{5A48C59F-0D5B-4FAC-8F1A-9FC98E12C1CF}.Release|x86.ActiveCfg = Release|Any CPU
+		{5A48C59F-0D5B-4FAC-8F1A-9FC98E12C1CF}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{01209F3B-2719-40F4-95AF-0FFBDF23571D} = {D383A6C9-EB5F-4CD3-AF34-F28E5D715C05}
+		{5A48C59F-0D5B-4FAC-8F1A-9FC98E12C1CF} = {6D8ACBED-7BE0-4E98-A861-50FE51FD8E36}
+	EndGlobalSection
+EndGlobal
