@@ -1,7 +1,12 @@
 using System;
 using Justa.Job.Backend.Api.Application.Services.Jwt.Models;
+using Justa.Job.Backend.Api.Identity.Data;
+using Justa.Job.Backend.Api.Identity.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -12,9 +17,27 @@ namespace Justa.Job.Backend.Api.Configuration
     {
         public static void AddAuthorizedMvc(this IServiceCollection services)
         {
+            AddIdentityCore(services);
             AddJwtAuthorization(services);
-            //AddAuthenticatedUser(services);
-            //AddAuthorization(services);
+            AddAuthenticatedUser(services);
+        }
+
+        private static void AddIdentityCore(IServiceCollection services)
+        {
+            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("host=localhost;port=5432;database=ApplicationDbContext;username=jst;password=jst"));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddDefaultTokenProviders();
+        }
+
+        private static void AddAuthenticatedUser(IServiceCollection services)
+        {
+            // ASP.NET HttpContext dependency
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // Infra - Identity
+            services.AddScoped<IAuthenticatedUser, AuthenticatedUser>();
         }
 
         private static void AddJwtAuthorization(IServiceCollection services)
