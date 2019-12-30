@@ -1,0 +1,28 @@
+version: '3.7'
+
+networks:
+    justa.job.backend.app:
+        driver: bridge
+
+services: 
+    justa.job.backend.api:
+        image: justa.job.backend
+        depends_on: 
+            - "db"
+        build: 
+            context: ./src/Justa.Job.Backend.Api
+            dockerfile: Dockerfile
+        ports: ["5000:80"]
+        networks: 
+            - justa.job.backend.app
+
+    db:
+        image: postgres:latest
+        ports: ["5432:5432"]
+        restart: always
+        environment: 
+            POSTGRES_USER: "jst"
+            POSTGRES_PASSWORD: "jst"
+            POSTGRES_DB: "ApplicationDbContext"
+        networks:
+            - justa.job.backend.app
