@@ -24,7 +24,10 @@ namespace Justa.Job.Backend.Api.Configuration
 
         private static void AddIdentityCore(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql("host=localhost;port=5432;database=ApplicationDbContext;username=jst;password=jst"));
+            var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
+                                    ?? "host=localhost;port=5432;database=ApplicationDbContext;username=jst;password=jst";
+
+            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()

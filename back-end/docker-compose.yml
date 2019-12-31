@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.4'
 
 networks:
     justa.job.backend.app:
@@ -13,6 +13,8 @@ services:
             context: ./src/Justa.Job.Backend.Api
             dockerfile: Dockerfile
         ports: ["5000:80"]
+        environment: 
+            DB_CONNECTION_STRING: "host=db;port=5432;database=ApplicationDbContext;username=jst;password=jst"
         networks: 
             - justa.job.backend.app
 
@@ -20,9 +22,15 @@ services:
         image: postgres:latest
         ports: ["5432:5432"]
         restart: always
+        volumes: 
+            - db_volume:/var/lib/postgresql/data
+            - ./src/Justa.Job.Backend.Api/seed.sql :/docker-entrypoint-initdb.d/seed.sql
         environment: 
             POSTGRES_USER: "jst"
             POSTGRES_PASSWORD: "jst"
             POSTGRES_DB: "ApplicationDbContext"
         networks:
             - justa.job.backend.app
+
+volumes: 
+    db_volume:
