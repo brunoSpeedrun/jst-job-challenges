@@ -9,11 +9,8 @@ namespace Justa.Job.Backend.Api.Controllers
     [Route("[controller]")]
     public class AuthController : JustaApiController
     {
-        private readonly IMediator _mediator;
-
-        public AuthController(IMediator mediator)
+        public AuthController(IMediator mediator) : base(mediator)
         {
-            _mediator = mediator;
         }
 
         [HttpPost("authorize")]

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hellang.Middleware.ProblemDetails;
 using Justa.Job.Backend.Api.Configuration;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -17,12 +18,14 @@ namespace Justa.Job.Backend.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -36,6 +39,8 @@ namespace Justa.Job.Backend.Api
             services.AddMediatR(typeof(Startup).Assembly);
 
             services.AddApplicationServices();
+
+            services.AddHellangProblemDetails(Environment);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +50,8 @@ namespace Justa.Job.Backend.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseProblemDetails();
 
             app.UseCors(option => option.AllowAnyOrigin()
                                         .AllowAnyHeader()

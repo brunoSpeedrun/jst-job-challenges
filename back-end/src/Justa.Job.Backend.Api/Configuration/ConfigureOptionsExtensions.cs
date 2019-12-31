@@ -13,7 +13,7 @@ namespace Justa.Job.Backend.Api.Configuration
 
             services.Configure<IdentityOptions>(options =>
             {
-                // Default Password settings.
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";                // Default Password settings.                
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireNonAlphanumeric = true;
