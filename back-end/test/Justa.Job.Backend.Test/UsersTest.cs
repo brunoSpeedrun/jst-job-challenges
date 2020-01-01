@@ -78,6 +78,32 @@ namespace Justa.Job.Backend.Test
             }
         }
 
+        [Fact]
+        public async Task ShouldDeleteUser()
+        {
+            var jwt = await GetJwt();
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt.AccessToken);
+
+            using (var httpResponse = await _httpClient.GetAsync($"/users"))
+            {
+                Assert.True(httpResponse.StatusCode == HttpStatusCode.OK);
+                
+                var httpContent = await httpResponse.Content.ReadAsStringAsync();
+                var applicationUsers = JsonConvert.DeserializeObject<ApplicationUser[]>(httpContent);
+
+                var userToDelete = applicationUsers.FirstOrDefault(u => u.UserName != _adminUserName);
+
+                if (userToDelete != null)
+                {
+                    using (var httpResponseDeleteUser = await _httpClient.DeleteAsync($"/users/{userToDelete.UserName}"))
+                    {
+                        Assert.True(httpResponseDeleteUser.StatusCode == HttpStatusCode.NoContent);
+                    }       
+                }
+            }
+        }
+
         public string NewPassword()
         {
             var upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

@@ -35,5 +35,13 @@ namespace Justa.Job.Backend.Api.Controllers
 
             return actionResult;
         }
+
+        [HttpDelete("{userName}")]
+        public async Task<IActionResult> DeleteUsers([FromQuery]DeleteUserRequest request)
+        {
+            var actionResult = await _mediator.Send(request);
+
+            return actionResult;
+        }
     }
 }
