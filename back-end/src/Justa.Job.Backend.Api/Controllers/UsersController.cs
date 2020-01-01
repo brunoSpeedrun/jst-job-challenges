@@ -21,12 +21,11 @@ namespace Justa.Job.Backend.Api.Controllers
         }
 
         [HttpGet("{userName}")]
-        public IActionResult GetUser(string userName)
+        public async Task<IActionResult> GetUser([FromQuery]QueryUserByUserName request)
         {
-            return Ok(new 
-            {
-                Message = "It's Works"
-            });
+            var actionResult = await _mediator.Send(request);
+
+            return actionResult;
         }
     }
 }

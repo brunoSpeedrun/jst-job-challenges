@@ -16,6 +16,8 @@ namespace Justa.Job.Backend.Test
     public class JustaJobBackendTestBase : IDisposable
     {
         protected readonly HttpClient _httpClient;
+        protected readonly string _adminUserName = "admin";
+        protected readonly string _adminPassword = "admin@123";
 
         public JustaJobBackendTestBase()
         {
@@ -36,8 +38,8 @@ namespace Justa.Job.Backend.Test
             {
                 var adminUser = new 
                 {
-                    UserName = "admin",
-                    Password = "admin@123"
+                    UserName = _adminUserName,
+                    Password = _adminPassword
                 };
 
                 var stringContent = ToStringContentApplicationJson(adminUser);

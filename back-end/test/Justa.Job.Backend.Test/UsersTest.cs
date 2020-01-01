@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bogus;
 using Justa.Job.Backend.Api.Application.MediatR.Requests;
+using Justa.Job.Backend.Api.Identity.Models;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -38,6 +39,24 @@ namespace Justa.Job.Backend.Test
                 var userCreated = JsonConvert.DeserializeObject<CreateUserRequest>(httpContent);
                 
                 Assert.Equal(userCreated.UserName, newUser.UserName);
+            }
+        }
+
+        [Fact]
+        public async Task ShouldGetUser()
+        {
+            var jwt = await GetJwt();
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt.AccessToken);
+
+            using (var httpResponse = await _httpClient.GetAsync($"/users/{_adminUserName}"))
+            {
+                Assert.True(httpResponse.StatusCode == HttpStatusCode.OK);
+                
+                var httpContent = await httpResponse.Content.ReadAsStringAsync();
+                var applicationUser = JsonConvert.DeserializeObject<ApplicationUser>(httpContent);
+                
+                Assert.Equal(_adminUserName, applicationUser.UserName);
             }
         }
 
