@@ -53,5 +53,15 @@ namespace Justa.Job.Backend.Api.Controllers
 
             return actionResult;
         }
+
+        [HttpPut("{userName}/change-password")]
+        public async Task<IActionResult> UpdatePassword([FromRoute]string userName, [FromBody]ChangeUserPasswordRequest request)
+        {
+            request.UserName = userName;
+
+            var actionResult = await _mediator.Send(request);
+
+            return actionResult;
+        }
     }
 }
