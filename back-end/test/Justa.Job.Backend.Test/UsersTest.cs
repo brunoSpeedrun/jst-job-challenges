@@ -60,6 +60,24 @@ namespace Justa.Job.Backend.Test
             }
         }
 
+        [Fact]
+        public async Task ShouldGetUsers()
+        {
+            var jwt = await GetJwt();
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt.AccessToken);
+
+            var queryString = $"page=0&pageSize=10&sortBy=email";
+
+            using (var httpResponse = await _httpClient.GetAsync($"/users?{queryString}"))
+            {
+                Assert.True(httpResponse.StatusCode == HttpStatusCode.OK);
+                
+                var httpContent = await httpResponse.Content.ReadAsStringAsync();
+                Assert.False(string.IsNullOrEmpty(httpContent));
+            }
+        }
+
         public string NewPassword()
         {
             var upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

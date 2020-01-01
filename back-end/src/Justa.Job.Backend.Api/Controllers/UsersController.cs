@@ -27,5 +27,13 @@ namespace Justa.Job.Backend.Api.Controllers
 
             return actionResult;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsers([FromQuery]QueryUserGetPage request)
+        {
+            var actionResult = await _mediator.Send(request);
+
+            return actionResult;
+        }
     }
 }
