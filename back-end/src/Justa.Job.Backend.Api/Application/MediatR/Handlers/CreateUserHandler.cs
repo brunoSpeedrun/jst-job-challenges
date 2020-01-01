@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 using Justa.Job.Backend.Api.Application.MediatR.Requests;
 using Justa.Job.Backend.Api.Identity.Models;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
 {
-    public class CreateUserHandler : IRequestHandler<CreateUserRequest, IActionResult>
+    public class CreateUserHandler : ActionResultRequestHandler<CreateUserRequest>
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -19,7 +20,7 @@ namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Handle(CreateUserRequest request, CancellationToken cancellationToken)
+        public override async Task<IActionResult> Handle(CreateUserRequest request, CancellationToken cancellationToken)
         {
             var applicationUser = new ApplicationUser
             {
@@ -33,27 +34,17 @@ namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
 
             if (identityResult.Succeeded)
             {
-                var createdResult = new CreatedResult($"users/{applicationUser.UserName}", new 
+                return Created($"users/{applicationUser.UserName}", new 
                 {
                     request.UserName,
                     request.Email,
                     request.PhoneNumber
-                });
-
-                return createdResult;                
+                });              
             }
 
-            var validationProblemDetails = new ValidationProblemDetails
-            {
-                Status = (int)HttpStatusCode.BadRequest
-            };
+            var validationProblemDetails = ToValidationProblemDetails(identityResult, StatusCodes.Status400BadRequest);
 
-            identityResult.Errors
-                          .GroupBy(e => e.Code)
-                          .ToList()
-                          .ForEach(i => validationProblemDetails.Errors.Add(i.Key, i.Select(x => x.Description).ToArray()));
-
-            return new BadRequestObjectResult(validationProblemDetails);
+            return BadRequest(validationProblemDetails);
         }
     }
 }

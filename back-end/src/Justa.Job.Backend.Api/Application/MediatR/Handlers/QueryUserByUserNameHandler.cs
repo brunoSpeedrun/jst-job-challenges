@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
 {
-    public class QueryUserByUserNameHandler : IRequestHandler<QueryUserByUserName, IActionResult>
+    public class QueryUserByUserNameHandler : ActionResultRequestHandler<QueryUserByUserName>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         
@@ -18,14 +18,13 @@ namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Handle(QueryUserByUserName request, CancellationToken cancellationToken)
+        public override async Task<IActionResult> Handle(QueryUserByUserName request, CancellationToken cancellationToken)
         {
             var applicationUser = await _userManager.FindByNameAsync(request.UserName);
 
             if (applicationUser is null)
             {
-                var notFound = new NotFoundResult();
-                return notFound;
+                return NotFound();
             }
 
             var user = new 
@@ -39,8 +38,7 @@ namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
                 applicationUser.PhoneNumber
             };
 
-            var okObjectResult = new OkObjectResult(user);
-            return okObjectResult;
+            return Ok(user);
         }
     }
 }

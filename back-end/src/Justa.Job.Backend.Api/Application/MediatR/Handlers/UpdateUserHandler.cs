@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 using Justa.Job.Backend.Api.Application.MediatR.Requests;
 using Justa.Job.Backend.Api.Identity.Models;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
 {
-    public class UpdateUserHandler : IRequestHandler<UpdateUserRequest, IActionResult>
+    public class UpdateUserHandler : ActionResultRequestHandler<UpdateUserRequest>
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -19,14 +20,13 @@ namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Handle(UpdateUserRequest request, CancellationToken cancellationToken)
+        public override async Task<IActionResult> Handle(UpdateUserRequest request, CancellationToken cancellationToken)
         {
             var applicationUser = await _userManager.FindByNameAsync(request.UserName);
 
             if (applicationUser is null)
             {
-                var notFound = new NotFoundResult();
-                return notFound;
+                return NotFound();
             }
 
             applicationUser.Email = request.Email;
@@ -47,26 +47,12 @@ namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
                     applicationUser.PhoneNumber
                 };
                 
-                var okObjectResult = new OkObjectResult(updatedUser);
-                return okObjectResult;
+                return Ok(updatedUser);
             }
 
-            var validationProblemDetails = new ValidationProblemDetails
-            {
-                Status = (int)HttpStatusCode.InternalServerError
-            };
+            var validationProblemDetails = ToValidationProblemDetails(identityResult, StatusCodes.Status500InternalServerError);
 
-            identityResult.Errors
-                          .GroupBy(e => e.Code)
-                          .ToList()
-                          .ForEach(i => validationProblemDetails.Errors.Add(i.Key, i.Select(x => x.Description).ToArray()));
-
-            var objectResult = new ObjectResult(validationProblemDetails)
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError
-            };
-
-            return objectResult;
+            return InternalServerError(validationProblemDetails);
         }
     }
 }

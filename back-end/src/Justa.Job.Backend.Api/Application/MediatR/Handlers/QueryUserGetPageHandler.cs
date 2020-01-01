@@ -13,7 +13,7 @@ using System;
 
 namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
 {
-    public class QueryUserGetPageHandler : IRequestHandler<QueryUserGetPage, IActionResult>
+    public class QueryUserGetPageHandler : ActionResultRequestHandler<QueryUserGetPage>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly HttpContext _httpContext;
@@ -24,7 +24,7 @@ namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
             _httpContext = httpContextAccessor.HttpContext;
         }
 
-        public async Task<IActionResult> Handle(QueryUserGetPage request, CancellationToken cancellationToken)
+        public override async Task<IActionResult> Handle(QueryUserGetPage request, CancellationToken cancellationToken)
         {
             var queryUser = _userManager.Users;
 
@@ -83,7 +83,7 @@ namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
             })
             .ToList();
 
-            return new OkObjectResult(dataWithHateoas);
+            return Ok(dataWithHateoas);
         }
     }
 }
