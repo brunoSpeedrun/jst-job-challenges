@@ -10,31 +10,45 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
 {
-    public class DeleteUserHandler : IRequestHandler<DeleteUserRequest, IActionResult>
+    public class UpdateUserHandler : IRequestHandler<UpdateUserRequest, IActionResult>
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        
-        public DeleteUserHandler(UserManager<ApplicationUser> userManager)
+
+        public UpdateUserHandler(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Handle(DeleteUserRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> Handle(UpdateUserRequest request, CancellationToken cancellationToken)
         {
-            var userToDelete = await _userManager.FindByNameAsync(request.UserName);
+            var applicationUser = await _userManager.FindByNameAsync(request.UserName);
 
-            if (userToDelete is null)
+            if (applicationUser is null)
             {
                 var notFound = new NotFoundResult();
                 return notFound;
             }
 
-            var identityResult = await _userManager.DeleteAsync(userToDelete);
+            applicationUser.Email = request.Email;
+            applicationUser.PhoneNumber = request.PhoneNumber;
+
+            var identityResult = await _userManager.UpdateAsync(applicationUser);
 
             if (identityResult.Succeeded)
             {
-                var noContent = new NoContentResult();
-                return noContent;
+                var updatedUser = new 
+                {
+                    applicationUser.Id,
+                    applicationUser.UserName,
+                    applicationUser.NormalizedUserName,
+                    applicationUser.Email,
+                    applicationUser.NormalizedEmail,
+                    applicationUser.EmailConfirmed,
+                    applicationUser.PhoneNumber
+                };
+                
+                var okObjectResult = new OkObjectResult(updatedUser);
+                return okObjectResult;
             }
 
             var validationProblemDetails = new ValidationProblemDetails

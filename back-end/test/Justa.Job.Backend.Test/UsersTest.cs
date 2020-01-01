@@ -14,17 +14,23 @@ namespace Justa.Job.Backend.Test
 {
     public class UsersTest : JustaJobBackendTestBase
     {
+        private readonly Faker<CreateUserRequest> _fakerUser;
+
+        public UsersTest() : base()
+        {
+            _fakerUser = new Faker<CreateUserRequest>()
+                                .RuleFor(x => x.UserName, f => f.Person.UserName)
+                                .RuleFor(x => x.Email, f => f.Person.Email)
+                                .RuleFor(x => x.Password, f => NewPassword())
+                                .RuleFor(x => x.PhoneNumber, f => f.Phone.PhoneNumber("###########"));
+        }
+
         [Fact]
         public async Task ShouldCreateUser()
         {
             var jwt = await GetJwt();
 
-            var fakerUser = new Faker<CreateUserRequest>()
-                                    .RuleFor(x => x.UserName, f => f.Person.UserName)
-                                    .RuleFor(x => x.Email, f => f.Person.Email)
-                                    .RuleFor(x => x.Password, f => NewPassword());
-
-            var newUser = fakerUser.Generate(1).FirstOrDefault();
+            var newUser = _fakerUser.Generate();
 
             var stringContent = ToStringContentApplicationJson(newUser);
 
@@ -99,6 +105,38 @@ namespace Justa.Job.Backend.Test
                     using (var httpResponseDeleteUser = await _httpClient.DeleteAsync($"/users/{userToDelete.UserName}"))
                     {
                         Assert.True(httpResponseDeleteUser.StatusCode == HttpStatusCode.NoContent);
+                    }       
+                }
+            }
+        }
+
+        [Fact]
+        public async Task ShouldUpdateUser()
+        {
+            var jwt = await GetJwt();
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt.AccessToken);
+
+            using (var httpResponse = await _httpClient.GetAsync($"/users"))
+            {
+                Assert.True(httpResponse.StatusCode == HttpStatusCode.OK);
+                
+                var httpContent = await httpResponse.Content.ReadAsStringAsync();
+                var applicationUsers = JsonConvert.DeserializeObject<ApplicationUser[]>(httpContent);
+
+                var userToUpdate = applicationUsers.FirstOrDefault(u => u.UserName != _adminUserName);
+
+                if (userToUpdate != null)
+                {
+                    var newData = _fakerUser.Generate();
+                    userToUpdate.Email = newData.Email;
+                    userToUpdate.PhoneNumber = newData.PhoneNumber;
+
+                    var stringContent = ToStringContentApplicationJson(new { userToUpdate.Email, userToUpdate.PhoneNumber});
+
+                    using (var httpResponseDeleteUser = await _httpClient.PutAsync($"/users/{userToUpdate.UserName}", stringContent))
+                    {
+                        Assert.True(httpResponseDeleteUser.StatusCode == HttpStatusCode.OK);
                     }       
                 }
             }
