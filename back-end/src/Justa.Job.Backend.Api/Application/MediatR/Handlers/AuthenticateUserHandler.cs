@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
 {
-    public class AuthenticateUserHandler : IRequestHandler<AuthenticateUserRequest, IActionResult>
+    public class AuthenticateUserHandler : ActionResultRequestHandler<AuthenticateUserRequest>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IJwtService _jwtService;
@@ -21,27 +21,25 @@ namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
             _jwtService = jwtService;
         }
 
-        public async Task<IActionResult> Handle(AuthenticateUserRequest request, CancellationToken cancellationToken)
+        public override async Task<IActionResult> Handle(AuthenticateUserRequest request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
 
             if (user is null)
             {
-                var notFound = new NotFoundResult();
-                return notFound;
+                return Unauthorized();
             }
 
             var passwordIsValid = await _userManager.CheckPasswordAsync(user, request.Password);
 
             if (!passwordIsValid)
             {
-                var unauthorized = new UnauthorizedResult();
-                return unauthorized;
+                return Unauthorized();
             }
 
             var jwt = _jwtService.CreateJsonWebToken(user);
 
-            return new OkObjectResult(jwt);
+            return Ok(jwt);
         }
     }
 }
