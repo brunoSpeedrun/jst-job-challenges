@@ -1,7 +1,7 @@
 namespace Justa.Job.Backend.Api.Application.Services.DataValidation.Interfaces
 {
-    public interface ICpfValidator
+    public interface ICnpjValidator
     {
-        bool Validate(string cpf);
+         bool Validate(string cnpj);
     }
 }

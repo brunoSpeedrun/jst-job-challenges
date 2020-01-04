@@ -20,5 +20,13 @@ namespace Justa.Job.Backend.Api.Controllers
 
             return actionResult;
         }
+
+        [HttpGet("cnpj/{cnpj}")]
+        public async Task<IActionResult> ValidateCnpj([FromQuery]QueryValidateCnpj request)
+        {
+            var actionResult = await _mediator.Send(request);
+
+            return actionResult;
+        }
     }
 }

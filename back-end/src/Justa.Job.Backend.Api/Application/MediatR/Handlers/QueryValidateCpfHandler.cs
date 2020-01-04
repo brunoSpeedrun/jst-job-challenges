@@ -19,7 +19,7 @@ namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
         public override Task<IActionResult> Handle(QueryValidateCpf request, CancellationToken cancellationToken)
             => Task.Run(() => 
             {
-               var isCpfValid = _cpfValidator.Valide(request.Cpf);
+               var isCpfValid = _cpfValidator.Validate(request.Cpf);
 
                var response = new 
                {

@@ -13,6 +13,7 @@ namespace Justa.Job.Backend.Api.Configuration
             services.AddScoped<IJwtService, JwtService>();
 
             services.AddScoped<ICpfValidator, InMemoryCpfValidator>();
+            services.AddScoped<ICnpjValidator, InMemoryCnpjValidator>();
         }
     }
 }
