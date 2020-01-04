@@ -18,9 +18,13 @@ namespace Justa.Job.Backend.Api.Configuration
             services.AddScoped<ICpfValidator, InMemoryCpfValidator>();
             services.AddScoped<ICnpjValidator, InMemoryCnpjValidator>();
             
-            services.AddHttpClient<EmailValidatorService>((serviceProvider, httpClient) => 
+            services.AddHttpClient<EmailValidatorService>(httpClient => 
             {
                 httpClient.BaseAddress = new Uri("http://apilayer.net/api/check");
+            });
+            services.AddHttpClient<PhoneNumberValidatorService>(httpClient => 
+            {
+                httpClient.BaseAddress = new Uri("http://apilayer.net/api/validate");
             });
         }
     }

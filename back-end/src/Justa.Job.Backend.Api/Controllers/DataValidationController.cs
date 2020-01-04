@@ -36,5 +36,13 @@ namespace Justa.Job.Backend.Api.Controllers
 
             return actionResult;
         }
+
+        [HttpGet("phone-number/{number}")]
+        public async Task<IActionResult> ValidatePhoneNumber([FromQuery]QueryValidatePhoneNumber request)
+        {
+            var actionResult = await _mediator.Send(request);
+
+            return actionResult;
+        }
     }
 }

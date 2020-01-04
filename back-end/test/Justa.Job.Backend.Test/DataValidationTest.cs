@@ -87,5 +87,25 @@ namespace Justa.Job.Backend.Test
                 Assert.Equal(isValid, response.FormatValid);
             }
         }
+
+        [Theory]
+        [InlineData("14158586273", true)]
+        public async Task ValidatePhoneNumber(string number, bool isValid)
+        {
+            var jwt = await GetJwt();
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt.AccessToken);
+
+            using (var httpResponse = await _httpClient.GetAsync($"/validate/phone-number/{number}"))
+            {
+                Assert.True(httpResponse.StatusCode == HttpStatusCode.OK);
+                
+                var httpContent = await httpResponse.Content.ReadAsStringAsync();                
+                var response = JsonConvert.DeserializeObject<PhoneNumberValidatorResponse>(httpContent);
+
+                Assert.Equal(number, response.Number);        
+                Assert.Equal(isValid, response.Valid);
+            }
+        }
     }
 }
