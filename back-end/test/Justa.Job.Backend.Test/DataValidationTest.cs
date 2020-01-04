@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Justa.Job.Backend.Api.Application.Services.DataValidation.Models;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -63,6 +64,27 @@ namespace Justa.Job.Backend.Test
 
                 Assert.Equal(cnpj, response.value);        
                 Assert.Equal(isValid, response.isValid);
+            }
+        }
+
+        [Theory]
+        [InlineData("9sahrawia_15_207a@grandw88.info", true)]
+        [InlineData("fulano.gmail", false)]
+        public async Task ValidateEmail(string email, bool isValid)
+        {
+            var jwt = await GetJwt();
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt.AccessToken);
+
+            using (var httpResponse = await _httpClient.GetAsync($"/validate/email/{email}"))
+            {
+                Assert.True(httpResponse.StatusCode == HttpStatusCode.OK);
+                
+                var httpContent = await httpResponse.Content.ReadAsStringAsync();                
+                var response = JsonConvert.DeserializeObject<EmialValidatorResponse>(httpContent);
+
+                Assert.Equal(email, response.Email);        
+                Assert.Equal(isValid, response.FormatValid);
             }
         }
     }

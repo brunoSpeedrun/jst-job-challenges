@@ -28,5 +28,13 @@ namespace Justa.Job.Backend.Api.Controllers
 
             return actionResult;
         }
+
+        [HttpGet("email/{email}")]
+        public async Task<IActionResult> ValidateEmail([FromQuery]QueryValidateEmail request)
+        {
+            var actionResult = await _mediator.Send(request);
+
+            return actionResult;
+        }
     }
 }
