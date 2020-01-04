@@ -1,3 +1,4 @@
+using Justa.Job.Backend.Api.Application.Services.DataValidation.Models;
 using Justa.Job.Backend.Api.Application.Services.Jwt.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,8 @@ namespace Justa.Job.Backend.Api.Configuration
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 1;
             });
+
+            services.Configure<DataValidationApiAccessKeys>(configuration.GetSection(nameof(DataValidationApiAccessKeys)));
         }
     }
 }
