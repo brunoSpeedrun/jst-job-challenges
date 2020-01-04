@@ -9,10 +9,10 @@ using Xunit;
 
 namespace Justa.Job.Backend.Test
 {
-    public class TestesDeAutenticacao : JustaJobBackendTestBase
+    public class AutehticationTest : JustaJobBackendTestBase
     {
         [Fact]
-        public void DeveEstarNaoAutorizado()
+        public void ShouldBeUnauthorized()
         {
             var httpResponse = _httpClient.GetAsync("/users").Result;
             
@@ -20,7 +20,7 @@ namespace Justa.Job.Backend.Test
         }
 
         [Fact]
-        public async Task DeveObterTokenAutenticacao()
+        public async Task ShouldGetAuthenticationToken()
         {
             var jsonContent = JsonConvert.SerializeObject(new { Username = "admin", Password = "admin@123" }); 
             var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
