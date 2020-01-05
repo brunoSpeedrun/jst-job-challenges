@@ -41,6 +41,8 @@ namespace Justa.Job.Backend.Api
             services.AddApplicationServices();
 
             services.AddHellangProblemDetails(Environment);
+
+            services.AddSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +60,13 @@ namespace Justa.Job.Backend.Api
                                         .AllowAnyMethod());
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => 
+            {
+                c.RoutePrefix = string.Empty;
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Data Validation Api");
+            });
 
             app.UseRouting();
 

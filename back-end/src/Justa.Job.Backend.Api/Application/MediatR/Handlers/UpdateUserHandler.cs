@@ -52,7 +52,7 @@ namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
 
             var validationProblemDetails = ToValidationProblemDetails(identityResult, StatusCodes.Status500InternalServerError);
 
-            return InternalServerError(validationProblemDetails);
+            return BadRequest(validationProblemDetails);
         }
     }
 }
