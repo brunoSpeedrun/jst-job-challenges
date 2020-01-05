@@ -24,7 +24,7 @@ services:
         restart: always
         volumes: 
             - db_volume:/var/lib/postgresql/data
-            - ./src/Justa.Job.Backend.Api/seed.sql :/docker-entrypoint-initdb.d/seed.sql
+            - ./src/Justa.Job.Backend.Api/seed.sql:/docker-entrypoint-initdb.d/seed.sql
         environment: 
             POSTGRES_USER: "jst"
             POSTGRES_PASSWORD: "jst"
