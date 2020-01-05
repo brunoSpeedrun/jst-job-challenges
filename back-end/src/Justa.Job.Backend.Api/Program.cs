@@ -20,7 +20,8 @@ namespace Justa.Job.Backend.Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>()
+                              .UseKestrel(options => options.AddServerHeader = false);
                 });
     }
 }
