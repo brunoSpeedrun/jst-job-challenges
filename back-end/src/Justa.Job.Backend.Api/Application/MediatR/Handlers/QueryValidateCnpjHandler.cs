@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Justa.Job.Backend.Api.Application.MediatR.Requests;
 using Justa.Job.Backend.Api.Application.Services.DataValidation.Interfaces;
+using Justa.Job.Backend.Api.Application.Services.DataValidation.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
@@ -21,12 +22,12 @@ namespace Justa.Job.Backend.Api.Application.MediatR.Handlers
             {
                 var isCnpjValid = _cnpjValidator.Validate(request.Cnpj);
 
-                var response = new 
+                var response = new ValidatorResponse
                 {
-                    type = "cpf",
-                    isValid = isCnpjValid,
-                    value = request.Cnpj,
-                    formated = isCnpjValid ? Convert.ToUInt64(request.Cnpj).ToString(@"00\.000\.000\/0000\-00") : string.Empty
+                    Type = "cpf",
+                    IsValid = isCnpjValid,
+                    Value = request.Cnpj,
+                    Formated = isCnpjValid ? Convert.ToUInt64(request.Cnpj).ToString(@"00\.000\.000\/0000\-00") : string.Empty
                 };
 
                 return Ok(response);
