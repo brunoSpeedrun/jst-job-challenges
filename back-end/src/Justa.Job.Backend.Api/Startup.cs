@@ -59,7 +59,7 @@ namespace Justa.Job.Backend.Api
                                         .AllowAnyHeader()
                                         .AllowAnyMethod());
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => 
