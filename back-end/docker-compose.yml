@@ -7,6 +7,7 @@ networks:
 services: 
     justa.job.backend.api:
         image: justa.job.backend
+        container_name: justa.job.backend.api
         depends_on: 
             - "db"
         build: 
@@ -20,6 +21,7 @@ services:
 
     db:
         image: postgres:latest
+        container_name: justa.job.backend.api.db
         ports: ["5432:5432"]
         restart: always
         volumes: 
