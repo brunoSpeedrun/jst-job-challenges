@@ -1,47 +1,49 @@
-# Desafio @ Justa Back-end
+# Data Validation Api
+
+Executa validações de E-mail, cpf, cnpj e número de telefone.
 
 ## Descrição
 
-Você precisa desenvolver um **REST API**, que deverá ser implementado em **Java, Kotlin, .NET ou GOLang**.
-O conteúdo da aplicação e o framework que será utilizado é de escolha do candidato, sendo necessário apenas que os requisitos abaixo sejam preenchidos.
+Uma **REST API** feita em AspNet Core 3.1 e PostgreSQL.
 
-Você deve fazer um **fork do projeto** e deixa-lo **público**, para que possamos analisar commits e seu processo de desenvolvimento.
+## Execução do Projeto
 
-Links com conteúdo para alguns dos temas citados serão fornecidos no fim da descrição do desafio.
+Execute `docker-compose build` e logo após `docker-compose up` e a aplicação vai estar disponível em `http://localhost:5000`
 
-### Requisistos Obrigatórios e Inegociáveis
+> Necessário a instalação do [Docker](https://docs.docker.com/install/) e [Docker Compose](https://docs.docker.com/compose/install/).
 
-- Utilizar arquitetura **MVC**
-- Utilizar banco de dados relacional ou NoSQL
-- Rotinas mínimas:
-  - Autenticação de usuários
-  - CRUD de usuários
-  - Mais quatro rotas que tenham sentido com a proposta da API
-- Consumir **pelo menos DUAS** APIs deste repositório: [Public Apis](https://github.com/public-apis/public-apis)
+Um usuário padrão está disponível para utilzação:
 
-### Requisitos Diferenciais
+**UserName:** admin
+**Password:** admin@123
 
-- Desenvolver utilizando o framework [Spring Boot](https://spring.io/projects/spring-boot) ou [Play! Framework]( https://www.playframework.com/)
-- Utilizar o banco de dados:
-  - PostgreSQL
-  - MongoDB
-- Utilizar arquitetura [Reativa](https://www.reactivemanifesto.org/pt-BR)
-- Boas práticas com [**Design Patterns**](https://github.com/beatrizacbs/java-design-patterns-pocs)
-- Utilizar práticas de **Clean Code**
-- Documentar utilizando **JavaDoc**
-- Utilizar o **Swagger**
-- **Testes** unitários e/ou de integração
-- Aplicação do **GitFlow** (não é necessária a utilização da CLI do gitflow, somente a utilização do conceito)
+## Estrutura do Projeto
 
-### Links Úteis
+O projeto foi estruturado da seguinte forma:
 
-- [Design Patterns](https://github.com/beatrizacbs/java-design-patterns-pocs)
-- [GitFlow](https://medium.com/trainingcenter/utilizando-o-fluxo-git-flow-e63d5e0d5e04)
-- [MVC](https://medium.com/upday-devs/android-architecture-patterns-part-1-model-view-controller-3baecef5f2b6)
-- [Teste](https://developer.android.com/training/testing/fundamentals), [Junit](https://medium.com/grtech-student-blog/getting-started-with-junit-92ab1ab91c93)
-- [Clean Code](https://simpleprogrammer.com/clean-code-principles-better-programmer/)
-- [Manifesto Reativo](https://www.reactivemanifesto.org/pt-BR)
-- [Play! Framework](https://www.playframework.com/)
-- [Spring Boot](https://spring.io/projects/spring-boot)
-- [MongoDB]( https://www.mongodb.com/ )
-- [PostgreSQL]( https://www.postgresql.org/ )
+```
+- src
+    - Application
+        - MediatR
+            - Requests
+            - Handlers
+        - Services
+    - Controllers
+    - Configuration
+    - Identity
+- test
+```
+
+* **MediatR/Handlers** - Contém a lógica executada nas Controllers. Cada *Action* de uma *Controller* delega a responsabilidade para um *Handler* que irá processar o *Request*.
+
+* **Services** - Contém os Serviços utilizados pela aplicação (JwtService, DataValidation)
+
+* **Configuration** - Configura toda a parte de injeção de dependências, Swagger e Autenticação via Jwt.
+
+* **Identity** - Configuração da parte de usuários da aplicação.
+
+* **test** - Contém os testes unitários.
+
+## Public Apis
+
+O Projeto utiliza as apis [numverify](https://numverify.com/) para a validação de número de telefone, e [mailboxlayer](https://mailboxlayer.com/) para a validação de e-mail.
